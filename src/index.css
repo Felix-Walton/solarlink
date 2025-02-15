@@ -1,0 +1,14 @@
+/* in your main CSS file (e.g., index.css or App.css) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+/* If using Tailwind, you can override the default sans font family: */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Customize Tailwind’s font family to use Inter first */
+:root {
+  --tw-font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, 
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
