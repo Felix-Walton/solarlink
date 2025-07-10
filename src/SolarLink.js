@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Parallax, ParallaxProvider } from 'react-scroll-parallax';
+import { Link } from 'react-router-dom';
 
 /**
  * Theme configuration using the original spacing values.
@@ -136,14 +137,23 @@ const SolarLink = () => {
                       <span className="text-white">✔️</span> Enjoy seamless installation with top-tier solar providers
                     </p>
                   </div>
-                  <p className={`text-lg ${theme.typography.body} text-white/90 max-w-2xl font-medium`}>
-                    <button 
-                      onClick={() => scrollToSection('contact')}
-                      className="inline-block px-8 py-3 bg-white text-gray-800 rounded-md hover:bg-white/90 transition-colors"
-                    >
-                      Get Quote Now
-                    </button>
-                  </p>
+                  <p className={`text-lg ${theme.typography.body} max-w-2xl font-medium`}>
+  <Link
+    to="/tool"
+    className="
+      inline-block                    /* so padding works */
+      rounded-md
+      bg-amber-500                    /* <<< background colour */
+      px-5 py-3                       /* button padding */
+      text-white
+      hover:bg-amber-600              /* darker on hover */
+      focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2
+      transition                       /* smooth colour change */
+    "
+  >
+    Solar Savings Calculator
+  </Link>
+</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-2xl">
                     {[
                       {

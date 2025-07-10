@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import { Routes, Route, useLocation } from 'react-router-dom';
+import SolarLink from './SolarLink';
+import ToolModal from './components/Tool';   // keep same file, we’ll edit next
 
-function App() {
+export default function App() {
+  const location = useLocation();               // current URL
+  const toolOpen = location.pathname === '/tool';
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {/* background page is **always** mounted */}
+      <SolarLink />
+
+      {/* overlay appears only on /tool */}
+      {toolOpen && <ToolModal />}
+    </>
   );
 }
-
-export default App;
