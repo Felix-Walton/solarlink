@@ -1,6 +1,5 @@
 {
   "version": 2,
-
   "builds": [
     {
       "src": "package.json",
@@ -18,28 +17,19 @@
       }
     }
   ],
-
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/index.py" },
-
-    { "src": "/static/(.*)", "dest": "/static/$1" },
-
-    { "src": "/favicon.ico", "dest": "/favicon.ico" },
-    { "src": "/logo192.png", "dest": "/logo192.png" },
-    { "src": "/logo512.png", "dest": "/logo512.png" },
-    { "src": "/solar1.png", "dest": "/solar1.png" },
-    { "src": "/solar2.png", "dest": "/solar2.png" },
-    { "src": "/manifest.json", "dest": "/manifest.json" },
-    { "src": "/robots.txt", "dest": "/robots.txt" },
-
-    { "handle": "filesystem" },
-
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
-
   "headers": [
     {
-      "source": "/(.*)", 
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
