@@ -1,15 +1,40 @@
 {
   "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false, 
+
   "builds": [
     {
-      "src": "api/index.py",
-      "use": "@vercel/python"
+      "src": "package.json", 
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build" 
+      }
+    },
+    {
+      "src": "api/index.py", 
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.10",
+        "maxLambdaSize": "15mb"
+      }
     }
   ],
+
   "routes": [
-    { "src": "/api/(.*)", "dest": "api/index.py" },
-    { "handle": "filesystem" },
+    { "src": "/api/(.*)", "dest": "/api/index.py" },
+
+    { "src": "/static/(.*)", "dest": "/static/$1" },
+
+    { "src": "/favicon.ico", "dest": "/favicon.ico" },
+    { "src": "/logo192.png", "dest": "/logo192.png" },
+    { "src": "/logo512.png", "dest": "/logo512.png" },
+    { "src": "/solar1.png", "dest": "/solar1.png" }, 
+    { "src": "/solar2.png", "dest": "/solar2.png" }, 
+    { "src": "/manifest.json", "dest": "/manifest.json" },
+    { "src": "/robots.txt", "dest": "/robots.txt" },
+
+
     { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "outputDirectory": "build"
+  ]
 }
