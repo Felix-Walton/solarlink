@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
  */
 const theme = {
   colors: {
-    menuBg: '#C8AB83',
+    menuBg: '#e2b417',
     contentBg: '#7F636E',
     featureBg: '#55868C',
     pageBg: '#CACAAA'

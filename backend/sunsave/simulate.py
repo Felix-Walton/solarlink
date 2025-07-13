@@ -165,7 +165,48 @@ if __name__ == "__main__":
 
 
 
+import datetime as _dt
+import numpy as np
+import pandas as pd
 
+def forecast_day(postcode: str, kwp: float, *, when: _dt.date | None = None):
+    """
+    Half-hour PV forecast (kWh) for the next 24 h, **aligned to today’s date**.
 
+    • Always pulls SARAH-3 hourly data for 2023 (the last available year).  
+    • Lifts the right month-and-day out of 2023 and re-dates it to *when*.
+    • Splits each 1-hour kWh equally into two 30-min slots so the series lines
+      up with price data.
 
+    Returns
+    -------
+    pandas.Series indexed at 00:00 UTC → 23:30 UTC for *when* (48 points).
+    """
+    if when is None:
+        when = _dt.date.today()
 
+    # 1) Lat/Lon
+    lat, lon = geocode(postcode)
+
+    # 2) One-year hourly series (latest SARAH-3 year = 2023)
+    hourly_2023 = hourly_generation_series(lat, lon, kwp, year=2023)
+
+    # 3) Grab the matching 24 h in 2023
+    try:
+        src_start = _dt.datetime(2023, when.month, when.day,
+                                 tzinfo=_dt.timezone.utc)
+    except ValueError:             # 29 Feb on a non-leap year
+        src_start = _dt.datetime(2023, when.month, when.day - 1,
+                                 tzinfo=_dt.timezone.utc)
+
+    src_slice = hourly_2023.loc[src_start : src_start + _dt.timedelta(hours=23)]
+    if len(src_slice) != 24:       # last-ditch fall-back
+        src_slice = hourly_2023.head(24)
+
+    # 4) Re-date to the requested day & split into half-hours
+    tgt_start = _dt.datetime(when.year, when.month, when.day,
+                             tzinfo=_dt.timezone.utc)
+    half_idx  = pd.date_range(tgt_start, periods=48, freq="30min", tz="UTC")
+    half_vals = np.repeat(src_slice.values / 2.0, 2)
+
+    return pd.Series(half_vals, index=half_idx, name="pv_kwh")
