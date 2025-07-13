@@ -163,10 +163,14 @@ def run_dispatch_simulation(
         pv_halfhour = pv_hourly
 
     # 5) Run greedy dispatch
-    return greedy_dispatch(
+    result = greedy_dispatch(
         pv_kwh=pv_halfhour,
         prices=price,
         cap_kwh=cap_kwh,
         pow_kw=pow_kw,
         eta=eta,
     )
+    
+    result["frame"] = result["frame"].to_dict(orient="records")
+
+    return result
