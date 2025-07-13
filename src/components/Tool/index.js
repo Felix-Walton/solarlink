@@ -54,7 +54,7 @@ export default function Tool() {
       hint:  'Enter your full UK postcode.',
       content: (
         <label className="step-field">
-          <span>Postcode:</span>
+          <span>Postcode:</span><br />
           <input
             className="input-field"
             value={postcode}
