@@ -2,9 +2,9 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from .sunsave.simulate import estimate_generation as calculate_daily_solar_generation
-from .sunsave.dispatch import greedy_dispatch as run_dispatch_simulation
-from .sunsave.octopus_prices import agile_prices as get_current_agile_prices
+from .sunsave.simulate import calculate_daily_solar_generation
+from .sunsave.dispatch import run_dispatch_simulation
+#from .sunsave.octopus_prices import agile_prices as get_current_agile_prices
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -29,20 +29,14 @@ def simulate():
 def dispatch():
     args = {
         "postcode": request.args.get("postcode"),
-        "kwp":       request.args.get("kwp", type=float),
-        "cap_kwh":   request.args.get("cap_kwh", type=float),
-        "pow_kw":    request.args.get("pow_kw", type=float),
-        "eta":       request.args.get("eta", type=float),
+        "kwp":      request.args.get("kwp",      type=float),
+        "cap_kwh":  request.args.get("cap_kwh",  type=float),
+        "pow_kw":   request.args.get("pow_kw",   type=float),
+        "eta":      request.args.get("eta",      type=float),
     }
     missing = [k for k, v in args.items() if v is None]
     if missing:
         return jsonify({"error": f"Missing query param(s): {', '.join(missing)}"}), 400
 
-    octopus_api_key = os.environ.get("OCTOPUS_API_KEY")
-    if not octopus_api_key:
-        return jsonify({"error": "OCTOPUS_API_KEY not set"}), 500
-
-    prices_data = get_current_agile_prices(args["postcode"], octopus_api_key)
-    results = run_dispatch_simulation(**args, prices_data=prices_data)
-
+    results = run_dispatch_simulation(**args)   # wrapper does PV + prices + dispatch
     return jsonify(results)

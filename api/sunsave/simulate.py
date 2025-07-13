@@ -210,3 +210,11 @@ def forecast_day(postcode: str, kwp: float, *, when: _dt.date | None = None):
     half_vals = np.repeat(src_slice.values / 2.0, 2)
 
     return pd.Series(half_vals, index=half_idx, name="pv_kwh")
+
+def calculate_daily_solar_generation(postcode: str, kwp: float) -> float:
+    """
+    Wrapper so api/index.py can import the legacy name.
+    Converts postcode -> (lat, lon) and calls estimate_generation().
+    """
+    lat, lon = geocode(postcode)
+    return estimate_generation(lat, lon, kwp)

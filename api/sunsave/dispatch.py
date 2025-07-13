@@ -118,3 +118,39 @@ def greedy_dispatch(
         "money_saved": money_saved,
         "kwh_shifted": kwh_shifted,
     }
+
+
+def run_dispatch_simulation(
+    postcode: str,
+    kwp: float,
+    cap_kwh: float,
+    pow_kw: float,
+    eta: float = BatteryCfg.eta,
+) -> dict:
+    """
+    Wrapper that lets api/index.py keep its old call-site.
+
+    • Builds a 24-hour PV series for *today* (SARAH-3 2023 data).
+    • Fetches Agile prices (falls back to mock if API empty).
+    • Calls greedy_dispatch and returns its dict unchanged.
+    """
+    # 1) Site location
+    lat, lon = geocode(postcode)
+
+    # 2) PV generation for next 24 h (hourly buckets)
+    pv = hourly_generation_series(lat, lon, kwp, year=2023).tail(24)
+
+    # 3) Price series (48 half-hours). Fall back if Agile empty.
+    today = _dt.date.today()
+    price = agile_prices(today, postcode=postcode)
+    if len(price) < 48:
+        price = mock_prices(pv.index)
+
+    # 4) Run greedy dispatch
+    return greedy_dispatch(
+        pv_kwh=pv,
+        prices=price,
+        cap_kwh=cap_kwh,
+        pow_kw=pow_kw,
+        eta=eta,
+    )
