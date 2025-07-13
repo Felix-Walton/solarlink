@@ -1,7 +1,5 @@
 {
   "version": 2,
-  "cleanUrls": true,       
-  "trailingSlash": false,  
 
   "builds": [
     {
@@ -21,19 +19,33 @@
     }
   ],
 
-  "rewrites": [ 
-    { "source": "/api/(.*)", "destination": "/api/index.py" },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/index.py" },
 
-    { "source": "/static/(.*)", "destination": "/static/$1" },
+    { "src": "/static/(.*)", "dest": "/static/$1" },
 
-    { "source": "/favicon.ico", "destination": "/favicon.ico" },
-    { "source": "/logo192.png", "destination": "/logo192.png" },
-    { "source": "/logo512.png", "destination": "/logo512.png" },
-    { "source": "/solar1.png", "destination": "/solar1.png" },
-    { "source": "/solar2.png", "destination": "/solar2.png" },
-    { "source": "/manifest.json", "destination": "/manifest.json" },
-    { "source": "/robots.txt", "destination": "/robots.txt" },
+    { "src": "/favicon.ico", "dest": "/favicon.ico" },
+    { "src": "/logo192.png", "dest": "/logo192.png" },
+    { "src": "/logo512.png", "dest": "/logo512.png" },
+    { "src": "/solar1.png", "dest": "/solar1.png" },
+    { "src": "/solar2.png", "dest": "/solar2.png" },
+    { "src": "/manifest.json", "dest": "/manifest.json" },
+    { "src": "/robots.txt", "dest": "/robots.txt" },
 
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "handle": "filesystem" },
+
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+
+  "headers": [
+    {
+      "source": "/(.*)", 
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' ws:; object-src 'none'; media-src 'self';"
+        }
+      ]
+    }
   ]
 }
