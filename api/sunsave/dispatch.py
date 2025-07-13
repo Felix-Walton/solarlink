@@ -20,8 +20,11 @@ can show a full breakdown.
 
 from __future__ import annotations
 from dataclasses import dataclass
+from .simulate import geocode, hourly_generation_series 
 import numpy as np
 import pandas as pd
+import datetime as _dt
+from .octopus_prices import agile_prices, mock_prices
 
 
 @dataclass(slots=True)
