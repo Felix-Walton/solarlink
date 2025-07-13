@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 from typing import Optional, Tuple
-from .dispatch import greedy_dispatch, BatteryCfg  
 from .octopus_prices import agile_prices
 
 
@@ -98,6 +97,7 @@ def geocode(postcode: str) -> Tuple[float, float]:
 
 # ── CLI ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
+    from .dispatch import greedy_dispatch, BatteryCfg  
     p = argparse.ArgumentParser(
         description="Estimate solar generation for a UK site")
     p.add_argument("--kwp", type=float,
