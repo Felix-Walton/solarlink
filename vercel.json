@@ -1,5 +1,6 @@
 {
-  "framework": "create-react-app",
+  "framework": "create-react-app",   
+
   "version": 2,
 
   "builds": [
@@ -13,9 +14,8 @@
       "use": "@vercel/python",
       "config": {
         "runtime": "python3.10",
-        "maxLambdaSize": "50mb",  
         "includeFiles": [
-          "requirements.txt",
+          "api/requirements.txt",           
           "sunsave/**"
         ]
       }
@@ -26,4 +26,5 @@
     { "source": "/api/(.*)", "destination": "/api/index.py" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
+
 }
