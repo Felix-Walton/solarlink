@@ -26,19 +26,40 @@ To run the project locally, you will need to have Python and Node.js installed.
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/solarlink.git
+    git clone https://github.com/SolarLink/solarlink.git
     cd solarlink
     ```
 
-2.  **Install dependencies:**
+2.  **Set up Python Virtual Environment and Install dependencies:**
     ```bash
-    npm install
+    python -m venv .venv
+    # On Windows:
+    .venv\Scripts\activate
+    # On macOS/Linux:
+    source .venv/bin/activate
     pip install -r requirements.txt
     ```
 
-3.  **Run the development servers:**
+3.  **Install Node.js dependencies:**
+    ```bash
+    npm install
+    ```
+
+4.  **Configure Octopus Energy API Key:**
+    The backend requires an Octopus Energy API key to fetch real-time electricity prices. Set your API key as an environment variable named `OCTOPUS_API_KEY`.
+
+    # On Windows (Command Prompt):
+    set OCTOPUS_API_KEY=YOUR_API_KEY_HERE
+
+    # On Windows (PowerShell):
+    $env:OCTOPUS_API_KEY="YOUR_API_KEY_HERE"
+
+    # On macOS/Linux:
+    export OCTOPUS_API_KEY=YOUR_API_KEY_HERE
+
+5.  **Run the development servers:**
     ```bash
     npm run dev
     ```
 
-This will start the React frontend on `http://localhost:3000` and the Flask backend on `http://localhost:5000`.
+This command will concurrently start both the React frontend on `http://localhost:3000` and the Flask backend on `http://localhost:5000`.
