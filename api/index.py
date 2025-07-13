@@ -13,7 +13,7 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "your_super_secret_key_here"
 
 # ----------  API ROUTES  ----------
 
-@app.get("/simulate")
+@app.get("/api/simulate")
 def simulate():
     postcode = request.args.get("postcode")
     kwp      = request.args.get("kwp", type=float)
@@ -25,7 +25,7 @@ def simulate():
     return jsonify({"daily_kwh": daily_kwh})
 
 
-@app.get("/dispatch")
+@app.get("/api/dispatch")
 def dispatch():
     args = {
         "postcode": request.args.get("postcode"),
