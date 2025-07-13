@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from .sunsave.simulate import calculate_daily_solar_generation
+from .sunsave.simulate import estimate_generation as calculate_daily_solar_generation
 from .sunsave.dispatch import run_dispatch_simulation
 from .sunsave.octopus_prices import get_current_agile_prices
 
