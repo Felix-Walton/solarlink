@@ -147,7 +147,7 @@ export default function Tool() {
     setShowDetails(false);
 
     try {
-      const base = 'http://localhost:5000';
+      const base = '/api';
       const qs =
         `?postcode=${encodeURIComponent(postcode)}` +
         `&kwp=${kwp}` +
