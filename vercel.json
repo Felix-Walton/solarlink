@@ -24,15 +24,4 @@
     { "source": "/(.*)", "destination": "/index.html" }
   ],
 
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws:; object-src 'none'; media-src 'self';"
-        }
-      ]
-    }
-  ]
 }
