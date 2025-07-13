@@ -2,9 +2,9 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from .simulate import calculate_daily_solar_generation
-from .dispatch import run_dispatch_simulation
-from .octopus_prices import get_current_agile_prices
+from .sunsave.simulate import calculate_daily_solar_generation
+from .sunsave.dispatch import run_dispatch_simulation
+from .sunsave.octopus_prices import get_current_agile_prices
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
