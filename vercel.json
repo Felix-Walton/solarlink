@@ -1,10 +1,11 @@
 {
   "version": 2,
+
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "start" }
+      "config": { "distDir": "build" }
     },
     {
       "src": "api/index.py",
@@ -15,14 +16,12 @@
       }
     }
   ],
+
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/index.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
+    { "src": "/api/(.*)", "dest": "/api/index.py" },
+
+    { "handle": "filesystem" },
+
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
