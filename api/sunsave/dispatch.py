@@ -122,3 +122,51 @@ def greedy_dispatch(
         "kwh_shifted": kwh_shifted,
     }
 
+
+
+def run_dispatch_simulation(
+    postcode: str,
+    kwp: float,
+    cap_kwh: float,
+    pow_kw: float,
+    eta: float = BatteryCfg.eta,
+) -> dict:
+    """
+    Wrapper that keeps the old call-site in api/index.py.
+
+    • Builds a 24-hour PV series for *today* (hourly SARAH-3 2023 data).
+    • Fetches Agile prices for the same day (48 half-hours); falls back to
+      mock tariff if the API returns an incomplete set.
+    • Upsamples the hourly PV to 48 half-hours so its index matches prices.
+    • Calls greedy_dispatch and returns its dict unchanged.
+    """
+    # 1) Site location
+    lat, lon = geocode(postcode)
+
+    # 2) PV generation for next 24 h  – 24 hourly kWh
+    pv_hourly = hourly_generation_series(lat, lon, kwp, year=2023).tail(24)
+
+    # 3) Price series – 48 half-hours
+    today  = _dt.date.today()
+    price  = agile_prices(today, postcode=postcode)
+    if len(price) < 48:                         # API glitch → mock tariff
+        price = mock_prices(price.index if len(price) == 48 else None)
+
+    # 4) Align PV to the same 48-slot index
+    if not pv_hourly.index.equals(price.index):
+        pv_halfhour = pd.Series(
+            np.repeat(pv_hourly.values / 2.0, 2),   # split each kWh in half
+            index=price.index,
+            name="pv_kwh",
+        )
+    else:
+        pv_halfhour = pv_hourly
+
+    # 5) Run greedy dispatch
+    return greedy_dispatch(
+        pv_kwh=pv_halfhour,
+        prices=price,
+        cap_kwh=cap_kwh,
+        pow_kw=pow_kw,
+        eta=eta,
+    )
