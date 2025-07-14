@@ -304,10 +304,10 @@ export default function Tool() {
             <p className="font-semibold">How this tool works</p>
             <ul className="list-disc list-inside mt-2 text-sm">
               <li>
-                <strong>Generation:</strong> forecasts PV output for the next 24 h based on your location and array size.
+                <strong>Generation:</strong> calculates the estimated <strong>average</strong> daily PV output for your location using historical data from PVGIS.
               </li>
               <li>
-                <strong>Dispatch:</strong> runs your battery against tomorrow’s Agile prices <em>after deducting a fixed 0.6 kWh household load from 17:00-22:00</em>.
+                <strong>Dispatch:</strong> simulates battery charging and discharging against a 24-hour solar and price profile to estimate potential savings.
               </li>
             </ul>
           </div>
@@ -315,8 +315,10 @@ export default function Tool() {
           <div className="info-box">
             <h2 className="font-semibold">Default assumptions</h2>
             <ul className="list-disc list-inside mt-2 text-sm">
-              <li>Falls back to a tiered mock tariff if live data is unavailable.</li>
-              <li>Battery defaults pre-filled above – edit to match your system.</li>
+              <li>Uses the PVGIS-SARAH3 solar radiation database for generation estimates.</li>
+              <li>Assumes zero baseline household electricity consumption; all PV generation is considered surplus available for battery charging or export.</li>
+              <li>Falls back to a tiered mock tariff if live Octopus Agile prices are unavailable for your region.</li>
+              <li>Battery defaults are pre-filled – edit them to match your system for an accurate simulation.</li>
             </ul>
           </div>
         </section>
